@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saarthi — Virtual Health Assistant</title>
+<meta name="description" content="Saarthi: Your AI-powered health companion. First aid guidance, symptom analysis, and doctor connectivity — because every Arjun needs a Saarthi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #020a0a;
+  --bg2: #071414;
+  --bg3: #0c1e1e;
+  --card: #0a1a1a;
+  --teal: #0d9488;
+  --teal-light: #2dd4bf;
+  --teal-glow: rgba(13,148,136,0.15);
+  --mint: #a7f3d0;
+  --white: #f0fdf4;
+  --gray: #94a3b8;
+  --muted: #475569;
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--bg); color: var(--white); overflow-x: hidden; }
+::selection { background: var(--teal); color: var(--bg); }
+
+/* Nav */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1rem 2.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(2,10,10,0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(13,148,136,0.1);
+}
+.nav-brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+.nav-brand .icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--teal), var(--teal-light)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+.nav-brand span { font-family: var(--font-display); font-size: 1.3rem; color: var(--white); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { color: var(--gray); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.3s; }
+.nav-links a:hover { color: var(--teal-light); }
+.nav-cta { padding: 0.5rem 1.2rem; background: var(--teal); color: var(--bg); font-size: 0.8rem; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; text-decoration: none; transition: all 0.3s; }
+.nav-cta:hover { background: var(--teal-light); }
+
+/* Hero */
+.hero {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 8rem 2rem 4rem;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(ellipse at 50% 30%, rgba(13,148,136,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.4rem 1rem; background: var(--teal-glow);
+  border: 1px solid rgba(13,148,136,0.2); border-radius: 50px;
+  font-size: 0.75rem; color: var(--teal-light); font-weight: 500;
+  margin-bottom: 1.5rem; letter-spacing: 0.5px;
+}
+.hero-badge .dot { width: 6px; height: 6px; background: var(--teal-light); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+.hero h1 {
+  font-family: var(--font-display); font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 1.05; margin-bottom: 1.5rem; color: var(--white);
+}
+.hero h1 em { color: var(--teal-light); font-style: italic; }
+.hero-sub {
+  font-size: 1.15rem; color: var(--gray); max-width: 600px;
+  margin: 0 auto 0.8rem; line-height: 1.7; font-weight: 300;
+}
+.hero-quote {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 0.95rem; color: var(--teal); max-width: 550px;
+  margin: 0 auto 2.5rem; opacity: 0.8;
+}
+.hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+  padding: 0.9rem 2rem; background: var(--teal); color: var(--bg);
+  font-weight: 600; font-size: 0.9rem; border: none; border-radius: 8px;
+  cursor: pointer; transition: all 0.3s; text-decoration: none;
+}
+.btn-primary:hover { background: var(--teal-light); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(13,148,136,0.3); }
+.btn-ghost {
+  padding: 0.9rem 2rem; background: transparent; color: var(--teal-light);
+  font-weight: 500; font-size: 0.9rem; border: 1px solid rgba(13,148,136,0.3);
+  border-radius: 8px; cursor: pointer; transition: all 0.3s; text-decoration: none;
+}
+.btn-ghost:hover { border-color: var(--teal-light); background: var(--teal-glow); }
+
+/* Stats */
+.stats {
+  display: flex; justify-content: center; gap: 3rem; padding: 3rem 2rem;
+  max-width: 800px; margin: 0 auto; flex-wrap: wrap;
+}
+.stat { text-align: center; }
+.stat .num { font-family: var(--font-display); font-size: 2.5rem; color: var(--teal-light); }
+.stat .label { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+
+/* Section */
+section { padding: 6rem 2rem; max-width: 1100px; margin: 0 auto; }
+.section-eyebrow { font-family: var(--font-mono); font-size: 0.75rem; color: var(--teal); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; }
+.section-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem; }
+.section-desc { font-size: 1rem; color: var(--gray); max-width: 550px; line-height: 1.7; margin-bottom: 3rem; }
+
+/* Features grid */
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+.feature-card {
+  background: var(--card); border: 1px solid rgba(13,148,136,0.08);
+  padding: 2rem; border-radius: 12px; transition: all 0.4s;
+  position: relative; overflow: hidden;
+}
+.feature-card:hover { border-color: rgba(13,148,136,0.25); transform: translateY(-4px); background: var(--bg3); }
+.feature-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--teal), transparent); opacity: 0; transition: opacity 0.4s;
+}
+.feature-card:hover::after { opacity: 1; }
+.feature-icon {
+  width: 48px; height: 48px; border-radius: 10px; background: var(--teal-glow);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.2rem; font-size: 1.4rem;
+}
+.feature-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.feature-card p { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
+
+/* How it works */
+.steps { display: flex; flex-direction: column; gap: 2rem; position: relative; }
+.steps::before {
+  content: ''; position: absolute; left: 24px; top: 0; bottom: 0;
+  width: 2px; background: linear-gradient(180deg, var(--teal), rgba(13,148,136,0.1));
+}
+.step {
+  display: flex; gap: 1.5rem; align-items: flex-start; position: relative;
+}
+.step-num {
+  width: 50px; height: 50px; min-width: 50px;
+  background: var(--bg); border: 2px solid var(--teal); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 1.2rem; color: var(--teal-light);
+  z-index: 1;
+}
+.step-content h3 { font-size: 1.05rem; margin-bottom: 0.3rem; }
+.step-content p { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
+
+/* Chat demo */
+.chat-demo {
+  background: var(--card); border: 1px solid rgba(13,148,136,0.1);
+  border-radius: 16px; padding: 2rem; max-width: 600px;
+  margin: 3rem auto 0;
+}
+.chat-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(13,148,136,0.1); }
+.chat-header .dot-online { width: 8px; height: 8px; background: var(--teal-light); border-radius: 50%; }
+.chat-header span { font-size: 0.85rem; color: var(--gray); }
+.chat-msgs { display: flex; flex-direction: column; gap: 0.8rem; }
+.msg {
+  max-width: 80%; padding: 0.8rem 1rem; border-radius: 12px;
+  font-size: 0.85rem; line-height: 1.5; animation: fadeIn 0.5s ease-out;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.msg.user { align-self: flex-end; background: var(--teal); color: var(--bg); border-bottom-right-radius: 4px; }
+.msg.bot { align-self: flex-start; background: var(--bg2); color: var(--white); border-bottom-left-radius: 4px; border: 1px solid rgba(13,148,136,0.1); }
+.msg.bot .typing { display: inline-flex; gap: 4px; }
+.msg.bot .typing span { width: 6px; height: 6px; background: var(--teal-light); border-radius: 50%; animation: blink 1.4s infinite; }
+.msg.bot .typing span:nth-child(2) { animation-delay: 0.2s; }
+.msg.bot .typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+/* Tech */
+.tech-list { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.tech-list span {
+  padding: 0.5rem 1rem; background: var(--teal-glow);
+  border: 1px solid rgba(13,148,136,0.15); border-radius: 6px;
+  font-size: 0.8rem; color: var(--teal-light); font-weight: 500;
+}
+
+/* CTA */
+.cta-section {
+  text-align: center; padding: 6rem 2rem;
+  background: radial-gradient(ellipse at center, rgba(13,148,136,0.06) 0%, transparent 70%);
+}
+.cta-section h2 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 1rem; }
+.cta-section p { color: var(--gray); max-width: 450px; margin: 0 auto 2rem; }
+
+/* Footer */
+footer {
+  padding: 2rem; text-align: center;
+  border-top: 1px solid rgba(13,148,136,0.08);
+  font-size: 0.75rem; color: var(--muted);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  nav { padding: 0.8rem 1.2rem; }
+  .nav-links { display: none; }
+  .hero { padding: 6rem 1.2rem 3rem; }
+  .stats { gap: 1.5rem; }
+  .steps::before { left: 23px; }
+  .featured-project { grid-template-columns: 1fr; }
+}
+
+/* Reveal */
+.reveal { opacity: 0; transform: translateY(25px); transition: all 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-brand">
+    <div class="icon">🏥</div>
+    <span>Saarthi</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#tech">Technology</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">Get Started</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div>
+    <div class="hero-badge"><span class="dot"></span> AI-Powered Health Guidance</div>
+    <h1>Your <em>Virtual</em><br>Health Assistant</h1>
+    <p class="hero-sub">Comprehensive first aid guidance, intelligent symptom analysis, and instant doctor connectivity — reducing panic and saving lives through AI-driven care.</p>
+    <p class="hero-quote">"Because every Arjun in dilemma needs a Saarthi like Krishna who can show you the right path."</p>
+    <div class="hero-actions">
+      <a href="#features" class="btn-primary">Explore Features</a>
+      <a href="#how" class="btn-ghost">See How It Works</a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stats reveal">
+  <div class="stat"><div class="num">24/7</div><div class="label">Always Available</div></div>
+  <div class="stat"><div class="num">50+</div><div class="label">Conditions Covered</div></div>
+  <div class="stat"><div class="num">&lt;3s</div><div class="label">Response Time</div></div>
+  <div class="stat"><div class="num">NLP</div><div class="label">Powered by AI</div></div>
+</div>
+
+<!-- Features -->
+<section id="features">
+  <p class="section-eyebrow reveal">Features</p>
+  <h2 class="section-title reveal">Intelligent Health Support</h2>
+  <p class="section-desc reveal">When panic strikes, Saarthi provides calm, step-by-step guidance. No more terrifying Google searches that show worst-case scenarios.</p>
+
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <div class="feature-icon">🩺</div>
+      <h3>Symptom Analysis</h3>
+      <p>Describe your symptoms in natural language. Saarthi's NLP engine identifies potential conditions and provides accurate, non-alarming guidance tailored to your situation.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">🩹</div>
+      <h3>First Aid Instructions</h3>
+      <p>Step-by-step first aid procedures for common emergencies — from burns and cuts to sprains and allergic reactions. Clear, actionable guidance when every second counts.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">💊</div>
+      <h3>Medication Guidance</h3>
+      <p>Get information about common medications, dosages, and precautions. Understand what over-the-counter options are available before reaching a healthcare professional.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">👨‍⚕️</div>
+      <h3>Doctor Connectivity</h3>
+      <p>Seamlessly connect with nearby healthcare providers. Saarthi bridges the gap between users and doctors, reducing response time for non-emergency medical consultations.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">🗣️</div>
+      <h3>Voice Interaction</h3>
+      <p>Hands busy or in distress? Speak to Saarthi using voice recognition. Get spoken responses back through text-to-speech, making it accessible for all users.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">📊</div>
+      <h3>Health Lifestyle Tracker</h3>
+      <p>Maintain daily health logs, track vitals, and receive AI-generated recommendations for a healthier lifestyle based on your patterns and goals.</p>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section id="how">
+  <p class="section-eyebrow reveal">How It Works</p>
+  <h2 class="section-title reveal">From Symptom to Solution</h2>
+  <p class="section-desc reveal">Saarthi uses a trained neural network to process your input and deliver the right guidance in seconds.</p>
+
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>Describe Your Condition</h3>
+        <p>Type or speak your symptoms naturally. Saarthi uses SpaCy NLP to tokenize, lemmatize, and understand your input — no medical jargon needed.</p>
+      </div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>AI Processes & Classifies</h3>
+        <p>Your input is converted into a bag-of-words representation and fed through a trained Keras neural network that classifies it against 50+ known health conditions.</p>
+      </div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>Receive Personalized Guidance</h3>
+        <p>Saarthi delivers step-by-step first aid, medication info, lifestyle tips, or recommends connecting with a doctor — all in calm, reassuring language.</p>
+      </div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h3>Connect with a Professional</h3>
+        <p>If the situation requires professional attention, Saarthi helps you find and contact nearby doctors or emergency services immediately.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Demo -->
+  <div class="chat-demo reveal">
+    <div class="chat-header">
+      <div class="dot-online"></div>
+      <span>Saarthi is online</span>
+    </div>
+    <div class="chat-msgs" id="chatMsgs">
+      <div class="msg user">I have a mild burn on my hand from cooking</div>
+      <div class="msg bot">I understand — here's what to do right now:<br><br><strong>1.</strong> Run cool (not cold) water over the burn for 10-15 minutes<br><strong>2.</strong> Do NOT apply ice, butter, or toothpaste<br><strong>3.</strong> Apply aloe vera gel or a burn cream<br><strong>4.</strong> Cover loosely with a sterile bandage<br><br>⚠️ If blisters form or the burn is larger than your palm, please consult a doctor.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Technology -->
+<section id="tech">
+  <p class="section-eyebrow reveal">Technology</p>
+  <h2 class="section-title reveal">Built With Modern AI</h2>
+  <p class="section-desc reveal">Saarthi combines natural language processing with deep learning to understand and respond to health queries intelligently.</p>
+  <div class="tech-list reveal">
+    <span>Python</span><span>TensorFlow</span><span>Keras</span><span>SpaCy NLP</span>
+    <span>NumPy</span><span>Pandas</span><span>Pyttsx3</span><span>SpeechRecognition</span>
+    <span>React</span><span>Node.js</span><span>REST API</span><span>JSON Datasets</span>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <h2 class="reveal">Ready to Try Saarthi?</h2>
+  <p class="reveal">Stop panicking. Start understanding. Let Saarthi guide you through health concerns with clarity and calm.</p>
+  <a href="mailto:workraghav25@gmail.com" class="btn-primary reveal">Request a Demo</a>
+</section>
+
+<footer>
+  <p>© 2025 Saarthi — Virtual Health Assistant. Built by Raghav Sharma.</p>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+reveals.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
