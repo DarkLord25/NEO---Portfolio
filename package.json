@@ -1,0 +1,10 @@
+{
+  "name": "portfolio-neo",
+  "private": true,
+  "workspaces": ["spline-hero"],
+  "scripts": {
+    "dev": "npm run dev -w spline-hero",
+    "build": "npm run build -w spline-hero",
+    "preview": "npm run preview -w spline-hero"
+  }
+}

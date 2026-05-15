@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#hero-spline-root {
+  position: absolute;
+  top: -5%;
+  right: -10px;
+  left: auto;
+  width: 55%;
+  height: 100%;
+  pointer-events: auto;
+  z-index: 0;
+  opacity: 0.9;
+}
+
+#hero-spline-root canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.hero-spline-inner {
+  background: transparent;
+}
+
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(0, 240, 255, 0.15);
+  border-top-color: #00f0ff;
+  border-radius: 50%;
+  animation: hero-spline-spin 0.8s linear infinite;
+}
+
+@keyframes hero-spline-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  #hero-spline-root {
+    display: none;
+  }
+}
